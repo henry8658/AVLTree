@@ -1,6 +1,6 @@
 #include <iostream>
-#ifndef ALGORITHMS__AVLTREE_H_
-#define ALGORITHMS__AVLTREE_H_
+#ifndef AVLTREE_H_
+#define AVLTREE_H_
 
 class AVLtree
 {
@@ -32,4 +32,4 @@ class AVLtree
 
 };
 
-#endif //ALGORITHMS__AVLTREE_H_
+#endif //AVLTREE_H_
