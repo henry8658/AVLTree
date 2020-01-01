@@ -1,6 +1,3 @@
-//
-// Created by Henry Park on 12/12/19.
-//
 #include <iostream>
 #ifndef ALGORITHMS__AVLTREE_H_
 #define ALGORITHMS__AVLTREE_H_
