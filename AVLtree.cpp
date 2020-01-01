@@ -51,14 +51,17 @@ void AVLtree::insertHelper(Node*& node, int data)
 
   if (balanceFactor(node) == 2)
   {
+    //If right subtree is left-heavy, then perform right-left rotation.
+    if (balanceFactor(node->right) < 0) rightRotation(node->right);
     leftRotation(node);
   }
 
   if (balanceFactor(node) == -2)
   {
+    //If left subtree is right-heavy, then perform left-right rotation.
+    if (balanceFactor(node->left) > 0) rightRotation(node->left);
     rightRotation(node);
   }
-
 }
 
 void AVLtree::Display()
@@ -85,7 +88,6 @@ void AVLtree::rightRotation(AVLtree::Node*& node)
 
 void AVLtree::leftRotation(AVLtree::Node *&node)
 {
-  std::cout << node->data << std::endl;
   Node* temp = node->right;
   node->right = temp->left;
   temp->left = node;
@@ -104,8 +106,4 @@ void AVLtree::updateHeight(AVLtree::Node*& node)
 {
   node->height = std::max(getHeight(node->right), getHeight(node->left)) + 1;
 }
-
-
-
-
 
