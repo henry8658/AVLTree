@@ -55,7 +55,7 @@ void AVLtree::insertHelper(Node*& node, int data)
   if (balanceFactor(node) == -2)
   {
     //If left subtree is right-heavy, then perform left-right rotation.
-    if (balanceFactor(node->left) > 0) rightRotation(node->left);
+    if (balanceFactor(node->left) > 0) leftRotation(node->left);
     rightRotation(node);
   }
 }
