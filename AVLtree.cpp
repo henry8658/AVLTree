@@ -17,8 +17,9 @@ bool AVLtree::isEmpty()
 
 bool AVLtree::Insert(int data)
 {
-  insertHelper(root, data);
-  return true;
+  bool isInserted = false;
+  insertHelper(root, data, isInserted);
+  return isInserted;
 }
 
 int AVLtree::balanceFactor(Node* node) const
@@ -26,7 +27,7 @@ int AVLtree::balanceFactor(Node* node) const
   return getHeight(node->right) - getHeight(node->left);
 }
 
-void AVLtree::insertHelper(Node*& node, int data)
+void AVLtree::insertHelper(Node*& node, int data, bool& status)
 {
   if (node == nullptr)
   {
@@ -35,29 +36,20 @@ void AVLtree::insertHelper(Node*& node, int data)
     node->height = 1;
     node->right = nullptr;
     node->left = nullptr;
+    status = true;
   } else if (node->data < data)
   {
     insertHelper(node->right, data);
   } else if (node->data > data)
   {
     insertHelper(node->left, data);
+  } else if (node->data == data)
+  {
+    return ;
   }
 
   updateHeight(node);
-
-  if (balanceFactor(node) == 2)
-  {
-    //If right subtree is left-heavy, then perform right-left rotation.
-    if (balanceFactor(node->right) < 0) rightRotation(node->right);
-    leftRotation(node);
-  }
-
-  if (balanceFactor(node) == -2)
-  {
-    //If left subtree is right-heavy, then perform left-right rotation.
-    if (balanceFactor(node->left) > 0) rightRotation(node->left);
-    rightRotation(node);
-  }
+  balance(node);
 }
 
 void AVLtree::Display()
@@ -100,6 +92,75 @@ int AVLtree::getHeight(AVLtree::Node* node) const
 
 void AVLtree::updateHeight(AVLtree::Node*& node)
 {
+  if (node == nullptr) return ;
   node->height = std::max(getHeight(node->right), getHeight(node->left)) + 1;
 }
 
+void AVLtree::removeHelper(AVLtree::Node*& node, int data, bool& status)
+{
+  if (node == nullptr)
+  {
+    return ;
+  } else if (node->data == data)
+  {
+    if (node->right == nullptr)
+    {
+      Node* temp = node;
+      node = node->left;
+      delete temp;
+    } else
+    {
+      findAndDeleteMinNode(node->right, node->data);
+    }
+    status = true;
+  } else if (node->data < data)
+  {
+    removeHelper(node->right, data, status);
+  } else if (node->data > data)
+  {
+    removeHelper(node->left, data, status);
+  }
+
+  updateHeight(node);
+  balance(node);
+}
+
+void AVLtree::findAndDeleteMinNode(Node*& node, int& data)
+{
+  if (node->left == nullptr)
+  {
+    Node* temp = node;
+    node = node->right;
+    data = temp->data;
+    delete temp;
+  } else
+  {
+    findAndDeleteMinNode(node->left, data);
+  }
+  updateHeight(node);
+  balance(node);
+}
+
+bool AVLtree::Remove(int data)
+{
+  bool isRemoved = false;
+  removeHelper(root, data, isRemoved);
+  return isRemoved;
+}
+
+void AVLtree::balance(Node*& node)
+{
+  if (balanceFactor(node) == 2)
+  {
+    //If right subtree is left-heavy, then perform right-left rotation.
+    if (balanceFactor(node->right) < 0) rightRotation(node->right);
+    leftRotation(node);
+  }
+
+  if (balanceFactor(node) == -2)
+  {
+    //If left subtree is right-heavy, then perform left-right rotation.
+    if (balanceFactor(node->left) > 0) rightRotation(node->left);
+    rightRotation(node);
+  }
+}

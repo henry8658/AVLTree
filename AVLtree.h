@@ -9,6 +9,7 @@ class AVLtree
   ~AVLtree();
 
   bool Insert(int data);
+  bool Remove(int data);
   void Display();
   bool isEmpty();
 
@@ -23,13 +24,15 @@ class AVLtree
   Node *root;
 
   int balanceFactor(Node* node) const;
-  void insertHelper(Node*& node, int data);
+  void insertHelper(Node*& node, int data, bool& status);
   void rightRotation(Node*& node);
   void leftRotation(Node*& node);
   void inOrder(Node* node) const;
   int getHeight(Node* node) const;
   void updateHeight(Node*& node);
-
+  void removeHelper(Node*& node, int data, bool& status);
+  void findAndDeleteMinNode(Node*& node, int& data);
+  void balance(Node*& node);
 };
 
 #endif //AVLTREE_H_
