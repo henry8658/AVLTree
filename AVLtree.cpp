@@ -48,17 +48,8 @@ void AVLtree::insertHelper(Node*& node, int data, bool& status)
     return ;
   }
 
-<<<<<<< HEAD
   updateHeight(node);
   balance(node);
-=======
-  if (balanceFactor(node) == -2)
-  {
-    //If left subtree is right-heavy, then perform left-right rotation.
-    if (balanceFactor(node->left) > 0) leftRotation(node->left);
-    rightRotation(node);
-  }
->>>>>>> 761d24bf40ab9663659f1425dca5b95a5cd3e67a
 }
 
 void AVLtree::Display()
